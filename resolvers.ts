@@ -1,8 +1,8 @@
 import Article from "./models/article.model"
+import Category from "./models/category.model";
 interface GetArticleArgs {
   id: string;
 }
-
 interface ArticleInput {
   title: string;
   avatar?: string;
@@ -16,6 +16,23 @@ interface updateArticleArgs{
   id: string,
   article: ArticleInput
 }
+
+interface GetCategoryArgs {
+  id: string
+}
+interface CategoryInput {
+  title: string;
+  avatar?: string;
+  description?: string;
+}
+
+interface CreateCategoryArgs {
+  category: CategoryInput;
+}
+interface updateCategoryArgs{
+  id: string,
+  category: CategoryInput
+}
 export const resolvers = {
   
   Query: {
@@ -27,14 +44,29 @@ export const resolvers = {
     },
     getArticle: async (_: any, args: GetArticleArgs) =>{
       const {id} = args
-      const articles = await Article.findOne({
+      const article = await Article.findOne({
         _id: id,
         deleted: false
       })
-      return articles
+      return article
+    },
+    getListCategory: async () =>{
+      const categories = await Category.find({
+        deleted: false
+      })
+      return categories
+    },
+    getCategory: async(_:any, args: GetCategoryArgs)=>{
+      const {id} = args
+      const category = await Category.findOne({
+        _id: id,
+        deleted: false
+      })
+      return category
     }
-  },
+
   
+  },
   Mutation: {
     createArticle: async (_: any, args: CreateArticleArgs) =>{
       const {article} = args
@@ -61,6 +93,35 @@ export const resolvers = {
         _id: id
       })
       return record
+    },
+
+
+
+     createCategory: async (_: any, args: CreateCategoryArgs) =>{
+      const {category} = args
+      const record = new Category(category)
+      await record.save()
+      return record
+    },
+    updateCategory: async (_: any, args: updateCategoryArgs) =>{
+      const {id, category} = args
+      await Category.updateOne({
+        _id: id
+      }, category)
+      const record = await Category.findOne({
+        _id: id
+      })
+      return record
+    },
+    deleteCategory: async (_: any, args: ({id:string})) =>{
+      const {id} = args
+      await Category.updateOne({
+        _id: id
+      },{
+        deleted: true,
+        deletedAt: new Date()
+      })
+      return "Đã xóa"
     },
   }
 }
