@@ -3,7 +3,8 @@ import * as database from './config/database'
 import dotenv from "dotenv"
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-
+import { typeDefs } from "./typeDefs";
+import { resolvers } from "./resolvers";
 const startServer = async () => {
   dotenv.config()
 
@@ -13,16 +14,8 @@ const startServer = async () => {
   await database.connect()
 
   // GraphQL schema
-  const typeDefs = `
-    type Query {
-      hello: String
-    }
-  `;
-  const resolvers = {
-    Query: {
-      hello: () => "Hello World!"
-    }
-  }
+  
+  
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers
