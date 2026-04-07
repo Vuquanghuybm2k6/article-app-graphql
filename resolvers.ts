@@ -1,5 +1,19 @@
 import Article from "./models/article.model"
+interface GetArticleArgs {
+  id: string;
+}
+
+interface ArticleInput {
+  title: string;
+  avatar?: string;
+  description?: string;
+}
+
+interface CreateArticleArgs {
+  article: ArticleInput;
+}
 export const resolvers = {
+  
   Query: {
     hello: () => "Hello World!",
     getListArticle: async () =>{
@@ -8,7 +22,7 @@ export const resolvers = {
       })
       return articles
     },
-    getArticle: async (_: any, args: { id: string }) =>{
+    getArticle: async (_: any, args: GetArticleArgs) =>{
       const {id} = args
       const articles = await Article.findOne({
         _id: id,
@@ -17,4 +31,13 @@ export const resolvers = {
       return articles
     }
   },
+  
+  Mutation: {
+    createArticle: async (_: any, args: CreateArticleArgs) =>{
+      const {article} = args
+      const record = new Article(article)
+      await record.save()
+      return record
+    }
+  }
 }
