@@ -5,6 +5,7 @@ export const typeDefs = gql `
     title: String,
     avatar: String,
     description: String
+    category: Category
   }
   type Category {
     id: ID,
@@ -22,7 +23,7 @@ export const typeDefs = gql `
   input ArticleInput{ # format input
     title: String, 
     avatar: String,
-    description: String
+    description: String,
   },
   input CategoryInput{ # format input
     title: String, 

@@ -4,9 +4,11 @@ interface GetArticleArgs {
   id: string;
 }
 interface ArticleInput {
-  title: string;
-  avatar?: string;
-  description?: string;
+  title: string,
+  avatar?: string,
+  description?: string,
+  categoryId: string
+
 }
 
 interface CreateArticleArgs {
@@ -66,6 +68,15 @@ export const resolvers = {
     }
 
   
+  },
+  Article: {
+    category: async (article:ArticleInput)=>{
+      const categoryId = article.categoryId
+      const category = await Category.findOne({
+        _id: categoryId
+      })
+      return category
+    }
   },
   Mutation: {
     createArticle: async (_: any, args: CreateArticleArgs) =>{
