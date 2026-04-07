@@ -19,5 +19,6 @@ export const typeDefs = gql `
   type Mutation{ # edit delete or create, we will use this function
     createArticle(article: ArticleInput): Article,
     deleteArticle(id:ID): String
+    updateArticle(id:ID, article: ArticleInput): Article
   }
 `;
