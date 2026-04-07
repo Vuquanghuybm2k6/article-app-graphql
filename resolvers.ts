@@ -38,6 +38,16 @@ export const resolvers = {
       const record = new Article(article)
       await record.save()
       return record
-    }
+    },
+    deleteArticle: async (_: any, args: ({id:string})) =>{
+      const {id} = args
+      await Article.updateOne({
+        _id: id
+      },{
+        deleted: true,
+        deletedAt: new Date()
+      })
+      return "Đã xóa"
+    },
   }
 }
