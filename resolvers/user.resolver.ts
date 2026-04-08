@@ -1,4 +1,4 @@
-import { Query } from "mongoose"
+
 import { generateRandomString } from "../helpers/generate"
 import User from "../models/user.model"
 import md5 from "md5"
@@ -19,13 +19,17 @@ interface GetUser {
   id: string
 }
 
+interface GraphQLContext {
+  user?: any
+}
+
 export const resolversUser = {
    Query: {
-    getUser: async (_: any, args: GetUser) => {
-      const { id } = args;
+    getUser: async (_: any, args: GetUser, context: GraphQLContext) => {
+      //const { id } = args;
 
       const infoUser = await User.findOne({
-        _id: id,
+        token: context.user?.token,
         deleted: false
       });
 
