@@ -3,7 +3,7 @@ import * as database from './config/database'
 import dotenv from "dotenv"
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
-import { typeDefs } from "./typeDefs";
+import { typeDefs } from "./typeDefs/index.typeDefs";
 import { resolvers } from "./resolvers";
 const startServer = async () => {
   dotenv.config()
@@ -17,7 +17,7 @@ const startServer = async () => {
   
   
   const apolloServer = new ApolloServer({
-    typeDefs,
+    typeDefs: typeDefs,
     resolvers
   })
 
