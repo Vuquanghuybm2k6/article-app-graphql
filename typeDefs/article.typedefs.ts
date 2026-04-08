@@ -4,7 +4,7 @@ export const typeDefsArticle = gql`
     id: ID,
     title: String,
     avatar: String,
-    description: String
+    description: String,
     category: Category
   }
  
@@ -15,7 +15,8 @@ export const typeDefsArticle = gql`
       currentPage: Int = 1,
       limitItems: Int = 2,
       filterKey: String,
-      filterValue: String
+      filterValue: String,
+      keyword: String
       ): [Article],
     getArticle(id: ID): Article, # Fe can send id to be
 

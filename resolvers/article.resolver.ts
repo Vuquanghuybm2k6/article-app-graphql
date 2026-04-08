@@ -24,7 +24,8 @@ interface GetListArticleArgs{
   currentPage: number,
   limitItems: number,
   filterKey: string,
-  filterValue: string
+  filterValue: string,
+  keyword: string
 }
 
 export const resolversArticle = {
@@ -37,7 +38,8 @@ export const resolversArticle = {
         currentPage,
         limitItems,
         filterKey,
-        filterValue
+        filterValue,
+        keyword
         } = args
       const find: any = {
         deleted: false
@@ -52,11 +54,19 @@ export const resolversArticle = {
       // Pagination
       const skip = (currentPage-1)*limitItems
       // End Pagination
+
       // Filter
       if(filterKey && filterValue){
         find[filterKey] = filterValue
       }
       // End Filter
+
+      // Search
+        if(keyword){
+          const keywordRegex = new RegExp(keyword, "i")
+          find["title"] = keywordRegex
+        }
+      // End Search
       const articles = await Article.find(find).sort(sort).limit(limitItems).skip(skip)
       return articles
     },
