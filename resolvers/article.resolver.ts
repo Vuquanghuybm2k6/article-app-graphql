@@ -18,14 +18,25 @@ interface UpdateArticleArgs{
   id: string,
   article: ArticleInput
 }
+interface GetListArticleArgs{
+  sortKey: string,
+  sortValue: string
+}
 
 export const resolversArticle = {
   
   Query: {
-    getListArticle: async () =>{
+    getListArticle: async (_:any, args:GetListArticleArgs ) =>{
+      const {sortKey, sortValue} = args
+      // Sort 
+      const sort:any = {}
+      if(sortKey && sortValue){
+        sort[sortKey] = sortValue
+      }
+      // End Sort 
       const articles = await Article.find({
         deleted: false
-      })
+      }).sort(sort)
       return articles
     },
     getArticle: async (_: any, args: GetArticleArgs) =>{

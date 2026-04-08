@@ -9,7 +9,7 @@ export const typeDefsArticle = gql `
   }
  
   type Query { # this function to get data
-    getListArticle: [Article],
+    getListArticle(sortKey: String, sortValue: String): [Article],
     getArticle(id: ID): Article, # Fe can send id to be
 
 
