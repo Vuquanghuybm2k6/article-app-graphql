@@ -11,6 +11,9 @@ interface UserInput {
 interface RegisterUser {
   user: UserInput;
 }
+interface LoginUser {
+  user: UserInput;
+}
 
 export const resolversUser = {
   
@@ -41,7 +44,37 @@ export const resolversUser = {
           token: data.token
         }
       }
-    }
-    
+    },
+    loginUser: async(_:any, args: LoginUser) =>{
+      const {email, password }= args.user
+      const infoUser = await User.findOne({
+        email: email,
+        deleted: false
+      })
+      if(!infoUser){
+        return{
+          code: 400,
+          message: "Email không tồn tại"
+        }
+      }
+      else{
+        if(md5(password) !== infoUser.password){
+          return {
+            code: 400,
+            message: "Sai mật khẩu!"
+          }
+        }
+        else{
+          return {
+            code: 200,
+            message: "Đăng nhập thành công",
+            id: infoUser.id,
+            fullName: infoUser.fullName,
+            email: infoUser.email,
+            token: infoUser.token,
+
+          }
+        }
+        }
   }
-}
+}}
