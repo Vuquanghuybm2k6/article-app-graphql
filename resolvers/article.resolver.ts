@@ -21,22 +21,35 @@ interface UpdateArticleArgs{
 interface GetListArticleArgs{
   sortKey: string,
   sortValue: string
+  currentPage: number,
+  limitItems: number
 }
 
 export const resolversArticle = {
   
   Query: {
     getListArticle: async (_:any, args:GetListArticleArgs ) =>{
-      const {sortKey, sortValue} = args
+      const {
+        sortKey,
+        sortValue,
+        currentPage,
+        limitItems
+        } = args
+
       // Sort 
       const sort:any = {}
       if(sortKey && sortValue){
         sort[sortKey] = sortValue
       }
       // End Sort 
+
+      // Pagination
+      const skip = (currentPage-1)*limitItems
+      // End Pagination
+
       const articles = await Article.find({
         deleted: false
-      }).sort(sort)
+      }).sort(sort).limit(limitItems).skip(skip)
       return articles
     },
     getArticle: async (_: any, args: GetArticleArgs) =>{

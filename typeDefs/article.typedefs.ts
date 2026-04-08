@@ -1,5 +1,5 @@
-import {gql} from "apollo-server-express"
-export const typeDefsArticle = gql `
+import { gql } from "apollo-server-express"
+export const typeDefsArticle = gql`
   type Article {
     id: ID,
     title: String,
@@ -9,7 +9,12 @@ export const typeDefsArticle = gql `
   }
  
   type Query { # this function to get data
-    getListArticle(sortKey: String, sortValue: String): [Article],
+    getListArticle(
+      sortKey: String,
+      sortValue: String,
+      currentPage: Int = 1,
+      limitItems: Int = 2
+      ): [Article],
     getArticle(id: ID): Article, # Fe can send id to be
 
 
