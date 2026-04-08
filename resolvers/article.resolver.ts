@@ -22,7 +22,9 @@ interface GetListArticleArgs{
   sortKey: string,
   sortValue: string
   currentPage: number,
-  limitItems: number
+  limitItems: number,
+  filterKey: string,
+  filterValue: string
 }
 
 export const resolversArticle = {
@@ -33,9 +35,13 @@ export const resolversArticle = {
         sortKey,
         sortValue,
         currentPage,
-        limitItems
+        limitItems,
+        filterKey,
+        filterValue
         } = args
-
+      const find: any = {
+        deleted: false
+      }
       // Sort 
       const sort:any = {}
       if(sortKey && sortValue){
@@ -46,10 +52,12 @@ export const resolversArticle = {
       // Pagination
       const skip = (currentPage-1)*limitItems
       // End Pagination
-
-      const articles = await Article.find({
-        deleted: false
-      }).sort(sort).limit(limitItems).skip(skip)
+      // Filter
+      if(filterKey && filterValue){
+        find[filterKey] = filterValue
+      }
+      // End Filter
+      const articles = await Article.find(find).sort(sort).limit(limitItems).skip(skip)
       return articles
     },
     getArticle: async (_: any, args: GetArticleArgs) =>{
